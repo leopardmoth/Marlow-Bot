@@ -1,1 +1,3 @@
-config.py 
+config.py
+*.py[cod]
+__pycache__/
