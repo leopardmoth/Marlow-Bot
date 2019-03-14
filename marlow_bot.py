@@ -25,7 +25,9 @@ client = discord.Client()
 
 TOKEN = config.TOKEN
 
-#commit test
+#stage changes & commit
+#git fetch origin master
+#git push origin master
 header = {"User-Agent" : "Magic Browser"}
 heart = '<a:loading_heart:542883297600995349>'
 staff = {'Admin':553314578528993311,
