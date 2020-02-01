@@ -17,6 +17,8 @@ from PIL import Image, ImageDraw
 from discord.ext import commands
 from urllib.request import urlopen, Request
 from aiohttp import ClientSession
+from datetime import datetime
+from static_data import ddragon
 
 header = {"User-Agent" : "Magic Browser"}
 heart = '<a:loading_heart:542883297600995349>'
@@ -139,7 +141,8 @@ class Fun(commands.Cog):
       color_list = []
       for i, color in enumerate(colors):
         imdraw.rectangle([(i*100, 0), ((i+1)*100, 100)],fill=color.rgb)
-        color_list.append(f"{color.rgb.r} {color.rgb.g} {color.rgb.b}")
+        color_list.append(
+            f"{color.rgb.r} {color.rgb.g} {color.rgb.b} #{color.rgb[0]:02x}{color.rgb[1]:02x}{color.rgb[2]:02x}")
         color_str = '\n'.join(map(str,color_list))
       with io.BytesIO() as palette:
         imnew.save(palette, format='PNG')
@@ -172,6 +175,41 @@ class Fun(commands.Cog):
       raise commands.CommandError("User not found.")
     finally:
       await loading_message.delete()
+
+  @commands.command()
+  async def league(self, ctx, username):
+    my_region = "na1"
+    summoner = config.watcher.summoner.by_name(my_region, username)
+    summoner_id = str(summoner['id'])
+    champion_info = config.watcher.champion_mastery.by_summoner(my_region, summoner_id)
+    dd = ddragon.ddragon()
+    champ = []
+    champ_lvl = []
+    champ_play = []
+    for i in range(5):
+      champion_info[i]['lastPlayTime'] = datetime.utcfromtimestamp(
+          champion_info[i]['lastPlayTime'] / 1000).strftime('%b %d, %Y')
+      champion_info[i]['championId'] = dd.getChampion(
+          champion_info[i]['championId']).name
+      if champion_info[i]['chestGranted'] == "True":
+        champion_info[i]['chestGranted'] = "Yes"
+      else:
+        champion_info[i]['chestGranted'] = "No"
+      champ.append(f"{champion_info[i]['championId']}")
+      champ_list = '\n'.join(map(str, champ))
+      champ_lvl.append(f"{champion_info[i]['championLevel']}")
+      champ_level = '\n'.join(map(str, champ_lvl))
+      champ_play.append(f"{champion_info[i]['lastPlayTime']}")
+      champ_playtime = '\n'.join(map(str, champ_play))
+    
+    lol_embed = discord.Embed(
+          title=f"{username}'s Summoner Stats", color=discord.Color.blue())
+    lol_embed.add_field(name="Champion", value=champ_list)
+    lol_embed.add_field(name="Champion Level", value=champ_level)
+    lol_embed.add_field(name="Last Played", value=champ_playtime)
+    lol_embed.set_thumbnail(url=dd.getIcon(
+        summoner['profileIconId']).image)
+    await ctx.send(embed=lol_embed)
 
   @commands.command()
   async def owo(self, ctx, *, arg):

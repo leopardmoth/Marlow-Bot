@@ -51,6 +51,8 @@ async def on_command_error(ctx,e):
         return await ctx.send(f"I need these permissions ({list.missing_perms}) to run this command.")
     elif isinstance(e, commands.DisabledCommand):
         return await ctx.send(f"Command is disabled.")
+    elif isinstance(e, discord.HTTPException):
+        return await ctx.send(f"**Error:** {e}")
     elif isinstance(e, commands.CommandError):
         return await ctx.send(f"**Error:** {e}")
     else:
