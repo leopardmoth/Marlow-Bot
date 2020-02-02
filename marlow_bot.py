@@ -1,7 +1,6 @@
 # import necessary modules
 import random
 import discord
-import asyncio
 import config
 from discord.ext import commands
 
@@ -11,10 +10,10 @@ client = discord.Client()
 
 TOKEN = config.TOKEN
 
-header = {"User-Agent" : "Magic Browser"}
+header = {"User-Agent": "Magic Browser"}
 heart = '<a:loading_heart:542883297600995349>'
-staff = {'Admin':553314578528993311,
-        'Mod':553356112636936203}
+staff = {'Admin': 553314578528993311,
+         'Mod': 553356112636936203}
 muted = 553358001550131208
 testing = 553314472341536776
 
@@ -24,22 +23,23 @@ async def on_ready():  # the event `on_ready` is triggered when the bot is ready
     print(f"{format(bot.user.name)} is online.")
     bot.load_extension("cogs.Utility")
     bot.load_extension("cogs.Fun")
-    await bot.change_presence(activity=discord.Activity(name="Despacito",type=discord.ActivityType.listening))
+    await bot.change_presence(activity=discord.Activity(name="Despacito", type=discord.ActivityType.listening))
     channel = bot.get_channel(testing)
     await channel.send("Bot is online.")
 
+
 @bot.event
-async def on_command_error(ctx,e):
+async def on_command_error(ctx, e):
     if hasattr(ctx.command, 'on_error'):
-      print(type(e), e)
-      return
+        print(type(e), e)
+        return
 
     e = getattr(e, 'original', e)
 
     ignored = (commands.CommandNotFound, commands.UserInputError)
 
     if isinstance(e, ignored):
-      return
+        return
 
     elif isinstance(e, commands.CommandOnCooldown):
         return await ctx.send(f'Stop spamming! Try again in {round(e.retry_after)+1} second(s).')
@@ -58,10 +58,11 @@ async def on_command_error(ctx,e):
     else:
         print(type(e), e)
         return
-    #await asyncio.sleep(5)
-    #await message.delete()
-    #try: await ctx.message.delete()
-    #except discord.HTTPException: pass
+    # await asyncio.sleep(5)
+    # await message.delete()
+    # try: await ctx.message.delete()
+    # except discord.HTTPException: pass
+
 
 @bot.event
 async def on_message(message):
@@ -74,16 +75,18 @@ async def on_message(message):
             await message.channel.send('whats this?')
     await bot.process_commands(message)
 
+
 @bot.event
 async def on_member_join(member):
     channel = bot.get_channel(555216652589858816)
-    message ='Hello {}! Please enjoy your stay.'.format(member.mention)
+    message = 'Hello {}! Please enjoy your stay.'.format(member.mention)
     await channel.send(message)
+
 
 @bot.event
 async def on_member_remove(member):
     channel = bot.get_channel(555216652589858816)
-    message ='Goodbye {}! We will miss you!'.format(member.mention)
+    message = 'Goodbye {}! We will miss you!'.format(member.mention)
     await channel.send(message)
 
 initial_extensions = ["cogs.Utility,cogs.Fun"]
@@ -94,7 +97,8 @@ if __name__ == '__cogs__':
         try:
             bot.load_extension(extension)
         except Exception as error:
-            print('{} cannot be loaded. [{}]'.format(extension,error))
+            print('{} cannot be loaded. [{}]'.format(extension, error))
+
 
 @bot.command()
 @commands.is_owner()
@@ -104,8 +108,9 @@ async def unload(ctx, extension_name: str):
         bot.unload_extension(extension_dir)
         await ctx.send("{} unloaded.".format(extension_name))
     except Exception as error:
-        await ctx.send('{} cannot be unloaded. [{}]'.format(extension_name,error))
-        print('{} cannot be unloaded. [{}]'.format(extension_name,error))
+        await ctx.send('{} cannot be unloaded. [{}]'.format(extension_name, error))
+        print('{} cannot be unloaded. [{}]'.format(extension_name, error))
+
 
 @bot.command()
 @commands.is_owner()
@@ -115,8 +120,9 @@ async def load(ctx, extension_name: str):
         bot.load_extension(extension_dir)
         await ctx.send("{} loaded.".format(extension_name))
     except Exception as error:
-        await ctx.send('{} cannot be loaded. [{}]'.format(extension_name,error))
-        print('{} cannot be loaded. [{}]'.format(extension_name,error))
+        await ctx.send('{} cannot be loaded. [{}]'.format(extension_name, error))
+        print('{} cannot be loaded. [{}]'.format(extension_name, error))
+
 
 @bot.command()
 @commands.is_owner()
