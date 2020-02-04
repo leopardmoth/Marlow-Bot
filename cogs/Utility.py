@@ -6,11 +6,12 @@ import typing
 from discord.ext import commands
 from aiohttp import ClientSession
 
-header = {"User-Agent" : "Magic Browser"}
-heart = '<a:loading_heart:542883297600995349>'
-staff = {'Admin':553314578528993311,
-        'Mod':553356112636936203}
+header = {"User-Agent": "Magic Browser"}
+heart = '<a:loading_heart: 542883297600995349>'
+staff = {'Admin': 553314578528993311,
+        'Mod': 553356112636936203}
 muted = 553358001550131208
+
 
 class Utility(commands.Cog):
     def __init__(self,bot):
@@ -22,7 +23,8 @@ class Utility(commands.Cog):
             attachment = ctx.message.attachments[0]
         else:
             attach_msg = await ctx.history().find(lambda m: m.attachments)
-            if attach_msg == None: raise commands.CommandError(f"Attachment not found.")
+            if attach_msg == None: 
+              raise commands.CommandError(f"Attachment not found.")
             attachment = attach_msg.attachments[0]
         return attachment
 

@@ -7,10 +7,8 @@ import pylast
 import colorgram
 import re
 import io
-import typing
 import config
 import imghdr
-import lyricsgenius
 import urbandictionary as ud
 from datetime import datetime
 from PIL import Image, ImageDraw
@@ -20,10 +18,10 @@ from aiohttp import ClientSession
 from datetime import datetime
 from static_data import ddragon
 
-header = {"User-Agent" : "Magic Browser"}
+header = {"User-Agent": "Magic Browser"}
 heart = '<a:loading_heart:542883297600995349>'
 staff = {'Admin':553314578528993311,
-    'Mod':553356112636936203}
+    'Mod': 553356112636936203}
 muted = 553358001550131208
 
 #lastfm
@@ -31,6 +29,7 @@ API_KEY = config.API_KEY  # this is a sample key
 API_SECRET = config.API_SECRET
 
 lastfm_network = pylast.LastFMNetwork(api_key=API_KEY, api_secret=API_SECRET)
+
 
 class Fun(commands.Cog):
   def __init__(self,bot):
