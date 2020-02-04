@@ -60,6 +60,14 @@ class Fun(commands.Cog):
     await ctx.send(f"{ctx.message.author.mention} is {random.choice(['an edgy', 'a depressed','a dumbass'])} {random.choice(['bitch', 'thot','bastard'])}!")
 
   @commands.command()
+  async def port(self, ctx, member: discord.Member = None):
+    '''port in oublic moment'''
+    if member is None:
+      await ctx.send(f"WHOT HE HECC POSTED PORT IM IN OUBLCI")
+    else:
+      await ctx.send(f"WHAT HE HECC {member.mention} POSTED PORT IM IN OUBLCI")
+    
+  @commands.command()
   async def convert(self, ctx, temp: float):
     '''Convert Farenheit to Celsius'''
     C = round((temp-32)/1.8,2)
